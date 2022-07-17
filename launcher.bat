@@ -1,0 +1,1 @@
+"C:\UE_4.27\Engine\Binaries\Win64\UE4Editor.exe" "C:\Users\Arajin\Documents\Unreal Projects\SteamV427\SteamV427.uproject" -game -WINDOWED -ResX=1280 -ResY=720 -WinX=0 -WinY=20 -log -log=GameLog.txt
