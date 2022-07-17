@@ -81,12 +81,12 @@ void USteamGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSession
 
 void USteamGameInstance::CreateServer(FString GameName)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Create Server"));
+	UE_LOG(LogTemp, Warning, TEXT("Create Server: %s"), *Subsystem->GetSubsystemName().ToString());
 	FOnlineSessionSettings SessionSettings;
 
 	SessionSettings.bAllowJoinInProgress = true;
 	SessionSettings.bIsDedicated = false;
-	SessionSettings.bIsLANMatch = (Subsystem->GetSubsystemName().ToString() != "NULL");
+	SessionSettings.bIsLANMatch = (Subsystem->GetSubsystemName() == "NULL");
 	SessionSettings.bShouldAdvertise = true;
 	SessionSettings.bUsesPresence = true;
 	SessionSettings.NumPublicConnections = 5;
@@ -113,7 +113,7 @@ void USteamGameInstance::FindServer()
 
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 
-	SessionSearch->bIsLanQuery = (Subsystem->GetSubsystemName().ToString() != "NULL");
+	SessionSearch->bIsLanQuery = (Subsystem->GetSubsystemName() == "NULL");
 	SessionSearch->MaxSearchResults = 10000;
 	SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 	
@@ -125,6 +125,7 @@ void USteamGameInstance::FindServer()
 
 void USteamGameInstance::JoinServer(FString SessionId)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Session ID to Join : %s"), *SessionId);
 	FOnlineSessionSearchResult* Result = nullptr;
 	for (auto Session : SessionSearch->SearchResults) {
 		if (SessionId.Equals(Session.GetSessionIdStr())) {
