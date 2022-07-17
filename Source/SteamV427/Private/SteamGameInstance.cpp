@@ -68,6 +68,11 @@ void USteamGameInstance::OnFindSessionComplete(bool Succeeded)
 
 void USteamGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
+	if (Result != EOnJoinSessionCompleteResult::Type::Success) {
+		SessionInterface->DestroySession(NAME_Game);
+		return;
+	}
+
 	if (APlayerController* PController = GetWorld()->GetFirstPlayerController()) {
 		FString JoinAddress = "";
 		SessionInterface->GetResolvedConnectString(SessionName, JoinAddress);
