@@ -32,6 +32,14 @@ protected:
 	virtual void OnCreateSessionComplete(FName SessionName, bool Succeeded);
 	virtual void OnFindSessionComplete(bool Succeeded);
 	virtual void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+	virtual void OnEndSessionComplete(FName SessionName, bool Succeeded);
+	virtual void OnDestroySessionComplete(FName SessionName, bool Succeeded);
+	virtual void OnSessionFailure(const FUniqueNetId &NetId, ESessionFailure::Type Result);
+	virtual void OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type Type, const FString& Result);
+	virtual void OnSessionParticipantsChange(FName SessionName, const FUniqueNetId& NewPlayer, bool bJoined);
+	virtual void OnUnregisterPlayersComplete(FName SessionName, const TArray< FUniqueNetIdRef >& Players, bool bWasSuccessful);
+	void HandleNetworkError(ENetworkFailure::Type FailureType, bool bIsServer);
+
 
 	UFUNCTION(BlueprintCallable)
 	void CreateServer(FString GameName);

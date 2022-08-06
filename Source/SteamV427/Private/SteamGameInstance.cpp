@@ -36,6 +36,30 @@ void USteamGameInstance::Init()
 			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(
 				this, &USteamGameInstance::OnJoinSessionComplete
 			);
+
+			SessionInterface->OnEndSessionCompleteDelegates.AddUObject(
+				this, &USteamGameInstance::OnEndSessionComplete
+			);
+
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(
+				this, &USteamGameInstance::OnDestroySessionComplete
+			);
+
+			SessionInterface->OnSessionFailureDelegates.AddUObject(
+				this, &USteamGameInstance::OnSessionFailure
+			);
+
+			GEngine->NetworkFailureEvent.AddUObject(
+				this, &USteamGameInstance::OnNetworkFailure
+			);
+
+			SessionInterface->OnSessionParticipantsChangeDelegates.AddUObject(
+				this, &USteamGameInstance::OnSessionParticipantsChange
+			);
+
+			SessionInterface->OnUnregisterPlayersCompleteDelegates.AddUObject(
+				this, &USteamGameInstance::OnUnregisterPlayersComplete
+			);
 		}
 	}
 	
@@ -82,6 +106,46 @@ void USteamGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSession
 			PController->ClientTravel(JoinAddress, ETravelType::TRAVEL_Absolute);
 		}
 	}
+}
+
+void USteamGameInstance::OnEndSessionComplete(FName SessionName, bool Succeeded)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Session Ended: %s"), *SessionName.ToString());
+}
+
+void USteamGameInstance::OnDestroySessionComplete(FName SessionName, bool Succeeded)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Session Destroyed: %s"), *SessionName.ToString());
+}
+
+void USteamGameInstance::OnSessionFailure(const FUniqueNetId& NetId, ESessionFailure::Type Result)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Unexpected Session Failure %d"), Result);
+}
+
+void USteamGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type Type, const FString& Result)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Unexpected Network Failure %s"), *Result);
+}
+
+void USteamGameInstance::OnSessionParticipantsChange(FName SessionName, const FUniqueNetId& NewPlayer, bool bJoined)
+{
+	if (bJoined) {
+		UE_LOG(LogTemp, Warning, TEXT("Player %s Joined"), *NewPlayer.ToString());
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Player %s Left"), *NewPlayer.ToString());
+	}
+}
+
+void USteamGameInstance::OnUnregisterPlayersComplete(FName SessionName, const TArray<FUniqueNetIdRef>& Players, bool bWasSuccessful)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Some players have been unregistred"));
+}
+
+void USteamGameInstance::HandleNetworkError(ENetworkFailure::Type FailureType, bool bIsServer)
+{
+	UE_LOG(LogTemp, Warning, TEXT("FUUUUUUUUUUUUUUUUUUUUUUUUUUU"));
 }
 
 void USteamGameInstance::CreateServer(FString GameName)
