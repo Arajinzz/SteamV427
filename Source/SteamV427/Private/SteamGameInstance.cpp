@@ -135,6 +135,8 @@ void USteamGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, 
 		SessionInterface->RemoveNamedSession(NAME_GameSession);
 		SessionInterface->DestroySession(NAME_GameSession);
 
+		
+
 	}
 }
 

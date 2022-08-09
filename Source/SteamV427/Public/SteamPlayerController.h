@@ -30,4 +30,8 @@ protected:
 	UPROPERTY(BlueprintAssignable, meta = (DisplayName = "OnChatMessageReceived"))
 	FOnChatMessageReceived m_OnChatMessageReceived;
 
+public:
+	FVector PlayerPosition = FVector(0.0f);
+	FRotator PlayerRotation = FRotator(0.0f);
+
 };

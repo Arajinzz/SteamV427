@@ -15,6 +15,9 @@ class ASteamV427GameMode : public AGameModeBase
 
 public:
 	ASteamV427GameMode();
+
+public:
+	virtual void Tick(float DeltaSeconds) override;
 };
 
 
