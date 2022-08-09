@@ -126,6 +126,16 @@ void USteamGameInstance::OnSessionFailure(const FUniqueNetId& NetId, ESessionFai
 void USteamGameInstance::OnNetworkFailure(UWorld* World, UNetDriver* NetDriver, ENetworkFailure::Type Type, const FString& Result)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Unexpected Network Failure %s"), *Result);
+
+	// Connection lost with the host
+	// Begin host migration
+	if (Type == ENetworkFailure::Type::ConnectionLost) {
+
+		// Clean Session
+		SessionInterface->RemoveNamedSession(NAME_GameSession);
+		SessionInterface->DestroySession(NAME_GameSession);
+
+	}
 }
 
 void USteamGameInstance::OnSessionParticipantsChange(FName SessionName, const FUniqueNetId& NewPlayer, bool bJoined)
